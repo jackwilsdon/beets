@@ -217,7 +217,7 @@ class SymbolsReplaced(Backend):
         return super(SymbolsReplaced, cls)._encode(s)
 
 
-class MusiXmatch(SymbolsReplaced):
+class Musixmatch(SymbolsReplaced):
     REPLACEMENTS = dict(SymbolsReplaced.REPLACEMENTS, **{
         r'\s+': '-'
     })
@@ -551,7 +551,7 @@ class LyricsPlugin(plugins.BeetsPlugin):
         'google': Google,
         'lyricwiki': LyricsWiki,
         'lyrics.com': LyricsCom,
-        'musixmatch': MusiXmatch,
+        'musixmatch': Musixmatch,
         'genius': Genius,
     }
 

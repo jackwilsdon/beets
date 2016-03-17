@@ -340,7 +340,7 @@ class LyricsGooglePluginTest(unittest.TestCase):
             self.skipTest("Run lyrics_download_samples.py script first.")
         for (source, s) in zip([lyrics.LyricsWiki,
                                 lyrics.LyricsCom,
-                                lyrics.MusiXmatch], DEFAULT_SOURCES):
+                                lyrics.Musixmatch], DEFAULT_SOURCES):
             url = s['url'] + s['path']
             if os.path.isfile(url_to_filename(url)):
                 res = source({}, log).fetch(s['artist'], s['title'])

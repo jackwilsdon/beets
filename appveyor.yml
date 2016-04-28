@@ -1,5 +1,6 @@
 version: "{build}"
 build: off
+test: off
 deploy: off
 
 environment:

@@ -42,7 +42,9 @@ install:
     - travis_retry pip install tox sphinx
     - travis_retry tox -e $TOX_ENV --notest
 
-script: tox -e $TOX_ENV
+script:
+    - travis_debug
+    - tox -e $TOX_ENV
 
 # Report coverage to codecov.io.
 before_install:

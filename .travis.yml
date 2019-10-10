@@ -36,9 +36,6 @@ matrix:
 # Non-Python dependencies.
 addons:
     apt:
-        sources:
-            - sourceline: "deb https://archive.ubuntu.com/ubuntu/ trusty multiverse"
-            - sourceline: "deb https://archive.ubuntu.com/ubuntu/ trusty-updates multiverse"
         packages:
             - bash-completion
             - gir1.2-gst-plugins-base-1.0

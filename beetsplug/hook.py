@@ -19,8 +19,10 @@ from __future__ import division, absolute_import, print_function
 import string
 import subprocess
 
+from beets import ui
 from beets.plugins import BeetsPlugin
 from beets.util import shlex_split, arg_encoding
+from logging import DEBUG, ERROR
 
 
 class CodingFormatter(string.Formatter):
@@ -83,14 +85,28 @@ class HookPlugin(BeetsPlugin):
 
             hook_event = hook['event'].as_str()
             hook_command = hook['command'].as_str()
+            hook_on_error = hook['on_error'].as_str() \
+                if hook['on_error'].exists() else 'log'
 
-            self.create_and_register_hook(hook_event, hook_command)
+            self.create_and_register_hook(hook_event, hook_command,
+                                          hook_on_error)
 
-    def create_and_register_hook(self, event, command):
+    def handle_error(self, method, error):
+        if method == 'abort':
+            raise ui.UserError(error)
+        else:
+            self._log.log(ERROR if method == 'log' else DEBUG, error)
+
+    def create_and_register_hook(self, event, command, on_error):
         def hook_function(**kwargs):
             if command is None or len(command) == 0:
                 self._log.error(u'invalid command "{}" for event {}', command,
                                 event)
+                return
+
+            if on_error not in ('abort', 'ignore', 'log'):
+                self._log.error(u'invalid on_error "{}" for event {}',
+                                on_error, event)
                 return
 
             # Use a string formatter that works on Unicode strings.
@@ -102,15 +118,17 @@ class HookPlugin(BeetsPlugin):
                 command_pieces[i] = formatter.format(piece, event=event,
                                                      **kwargs)
 
-            self._log.debug(u'running command "{0}" for event {1}',
+            self._log.debug(u'running command "{}" for event {}',
                             u' '.join(command_pieces), event)
 
             try:
                 subprocess.check_call(command_pieces)
             except subprocess.CalledProcessError as exc:
-                self._log.error(u'hook for {0} exited with status {1}',
-                                event, exc.returncode)
+                self.handle_error(on_error,
+                                  u'hook for {} exited with status {}'
+                                  .format(event, exc.returncode))
             except OSError as exc:
-                self._log.error(u'hook for {0} failed: {1}', event, exc)
+                self.handle_error(on_error,
+                                  u'hook for {} failed: {}'.format(event, exc))
 
         self.register_listener(event, hook_function)

@@ -62,7 +62,7 @@ class HookTest(_common.TestCase, TestHelper):
         with capture_log('beets.hook') as logs:
             plugins.send('test_event')
 
-        self.assertIn('hook: invalid command ""', logs)
+        self.assertIn('hook: invalid command "" for event test_event', logs)
 
     def test_hook_non_zero_exit(self):
         self._add_hook('test_event', 'sh -c "exit 1"')

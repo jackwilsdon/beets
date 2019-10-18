@@ -43,11 +43,14 @@ class HookTest(_common.TestCase, TestHelper):
         self.unload_plugins()
         self.teardown_beets()
 
-    def _add_hook(self, event, command):
+    def _add_hook(self, event, command, on_error=None):
         hook = {
             'event': event,
             'command': command
         }
+
+        if on_error is not None:
+            hook['on_error'] = on_error
 
         hooks = config['hook']['hooks'].get(list) if 'hook' in config else []
         hooks.append(hook)
@@ -74,8 +77,14 @@ class HookTest(_common.TestCase, TestHelper):
 
         self.assertIn('hook: hook for test_event exited with status 1', logs)
 
-    def test_hook_non_existent_command(self):
-        self._add_hook('test_event', 'non-existent-command')
+    def test_hook_non_zero_exit_abort(self):
+        pass
+
+    def test_hook_non_existent_command_abort(self):
+        pass
+
+    def test_hook_non_existent_command_log(self):
+        self._add_hook('test_event', 'non-existent-command', 'log')
 
         self.load_plugins('hook')
 
@@ -85,6 +94,16 @@ class HookTest(_common.TestCase, TestHelper):
         self.assertTrue(any(
             message.startswith("hook: hook for test_event failed: ")
             for message in logs))
+
+    def test_hook_invalid_on_error_log(self):
+        self._add_hook('test_event', 'non-existent-command', 'explode', 'log')
+
+        self.load_plugins('hook')
+
+        with capture_log('beets.hook') as logs:
+            plugins.send('test_event')
+
+        self.assertIn('hook: invalid on_error "explode" for event test_event', logs)
 
     def test_hook_no_arguments(self):
         temporary_paths = [

@@ -28,9 +28,8 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   invalid
    guides/index
-     reference/index
+   reference/index
    plugins/index
    faq
    contributing

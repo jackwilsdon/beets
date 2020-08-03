@@ -376,6 +376,6 @@ if you don't want this behavior and don't need Windows-safe names.
 You need to put the ``beet`` program on your system's search path. If you
 installed using pip, the command ``pip show -f beets`` can show you where
 ``beet`` was placed on your system. If you need help extending your ``$PATH``,
-try `this Super User answer`_.
+try `some invalid link`_.
 
 .. _this Super User answer: https://superuser.com/a/284361/4569

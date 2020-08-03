@@ -15,9 +15,9 @@ config -p`` to see the path on your system):
 You can launch your text editor to create or update your configuration by
 typing ``beet config -e``. (See the :ref:`config-cmd` command for details.) It
 is also possible to customize the location of the configuration file and even
-use multiple layers of configuration. See `Configuration LocationS`_, below.
+use multiple layers of configuration. See `Configuration Location`_, below.
 
-The config file uses `YAMLS`_ syntax. You can use the full power of YAML, but
+The config file uses `YAML`_ syntax. You can use the full power of YAML, but
 most configuration options are simple key/value pairs. This means your config
 file will look like this::
 

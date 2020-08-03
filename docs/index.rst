@@ -30,7 +30,7 @@ Contents
 
    invalid
    guides/index
-   reference/index
+     reference/index
    plugins/index
    faq
    contributing
@@ -40,3 +40,8 @@ Contents
    :maxdepth: 1
 
    changelog
+   
+.. foobar::
+   :invalid: 1
+   
+   nice
